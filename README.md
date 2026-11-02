@@ -73,6 +73,13 @@ The dashboard includes the following metrics:
 - Forecasted product demand for the next 7 days.
 - Evaluated model performance using MAE and RMSE.
 - Saved forecast results in `prophet_forecast.csv`.
+
+ ## Slack Alert Integration
+
+- Integrated Slack Incoming Webhooks with Python.
+- Automated notifications for low-stock products and delayed shipments.
+- Generated alert messages using supply chain alert data.
+- Successfully tested Slack message delivery.
   
 ## Project Status
 
