@@ -125,6 +125,33 @@ flowchart TD
 9. Created KPI visualizations and an interactive dashboard in Apache Superset.
 10. Worked on testing, validation, and project documentation.
 
+## Testing & Validation
+
+### Data Validation
+- Generated and validated four simulated datasets.
+- Successfully imported 100 inventory records, 10 supplier records, 200 shipment records, and 9,000 product demand records into PostgreSQL during testing.
+- Verified the database import process.
+
+### Forecasting Model Evaluation
+
+The forecasting models were evaluated using Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE).
+
+| Model | MAE | RMSE |
+|---|---:|---:|
+| Baseline | 8.14 | 9.21 |
+| Linear Regression | 8.18 | 9.28 |
+
+**Observation:** The baseline model performed slightly better than Linear Regression on the evaluated test data. This highlights the importance of comparing forecasting models before selecting one.
+
+### Integration Testing
+- Tested Python-based supply chain alert generation.
+- Successfully tested Slack Incoming Webhook message delivery.
+- Generated a 7-day demand forecast using Prophet.
+
+### Validation Status
+Final end-to-end testing and hourly refresh automation verification are pending.
+
+
 ## Project Status
 
 **Completed Components**
