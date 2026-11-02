@@ -89,6 +89,29 @@ The dashboard focuses on the following metrics:
 - Used supply chain alert data to prepare alert messages.
 - Successfully tested Slack message delivery.
 
+## System Architecture
+
+```mermaid
+flowchart TD
+    A[Python Data Generation] --> B[CSV Datasets]
+    B --> C[PostgreSQL Database]
+
+    C --> D[SQL KPI Analysis]
+    C --> E[Python Data Processing]
+
+    E --> F[Anomaly Detection]
+    E --> G[Prophet Demand Forecasting]
+    E --> H[Supply Chain Alert Generation]
+
+    H --> I[Slack Notifications]
+
+    D --> J[Apache Superset Dashboard]
+    F --> J
+    G --> J
+
+    J --> K[Inventory and Supply Chain Insights]
+```
+
 ## Project Workflow
 
 1. Generated simulated retail and supply chain datasets using Python.
