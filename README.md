@@ -66,7 +66,14 @@ The dashboard includes the following metrics:
 5. Created visualizations and KPI charts in Apache Superset.
 6. Developed an interactive Retail & Supply Chain Control Tower dashboard.
 7. Worked on testing, validation, and project documentation.
+   
+## Demand Forecasting – Prophet
 
+- Implemented time-series demand forecasting using Facebook Prophet.
+- Forecasted product demand for the next 7 days.
+- Evaluated model performance using MAE and RMSE.
+- Saved forecast results in `prophet_forecast.csv`.
+  
 ## Project Status
 
 **Dashboard Development: Completed**
