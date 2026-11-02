@@ -1,70 +1,124 @@
-# KPI Documentation – Retail & Supply Chain Control Tower
+# KPI & SQL Analysis Documentation
+## Retail & Supply Chain Control Tower
 
-This document describes the key performance indicators used to monitor inventory, supplier performance, and shipment operations.
+This document describes the SQL analyses implemented to monitor inventory, supplier performance, and shipment operations using PostgreSQL.
 
-## 1. Inventory KPIs
+## 1. Inventory KPI Analysis
 
-### Stock-Out Rate
-Measures the percentage of inventory records where stock quantity is zero.
+**SQL File:** `inventory_kpi.sql`
 
-**Formula:**  
-(Out-of-Stock Products / Total Products) × 100
+### 1.1 Inventory Overview
+Provides a summary of inventory data.
 
-### Low Stock Products
-Counts products whose available stock is at or below the reorder level.
+- Total Products
+- Total Inventory Records
+- Total Stock Units
 
-**Condition:**  
-`stock_quantity <= reorder_level`
+### 1.2 Out-of-Stock Inventory Records
+Counts inventory records where available stock is zero.
 
-### Average Days of Inventory
-Estimates how many days the current stock can support based on average daily product demand.
+**Condition:** `stock_quantity = 0`
 
-**Formula:**  
-`stock_quantity / Average Daily Units Sold`
+### 1.3 Low-Stock Inventory Records
+Identifies inventory records where stock quantity is at or below the reorder level.
 
-## 2. Supplier KPIs
+**Condition:** `stock_quantity <= reorder_level`
 
-### Average Supplier Lead Time
-Measures the average number of days suppliers take to deliver products.
+### 1.4 Low-Stock Products by Warehouse
+Displays products requiring replenishment, including:
 
-**Formula:**  
-`AVG(lead_time_days)`
+- Product ID and Product Name
+- Warehouse ID
+- Current Stock Quantity
+- Reorder Level
+- Units Below Reorder Level
 
-### Average Supplier Reliability
-Measures the average reliability score across suppliers.
+### 1.5 Inventory Stock by Warehouse
+Calculates total available stock for each warehouse and ranks warehouses by stock quantity.
 
-**Formula:**  
-`AVG(reliability_score)`
+**Calculation:** `SUM(stock_quantity)` grouped by `warehouse_id`.
 
-## 3. Shipment KPIs
+## 2. Supplier Performance Analysis
 
-### On-Time Delivery Rate
-Measures the percentage of delivered shipments received on or before the expected delivery date.
+**SQL File:** `supplier_performance_kpi.sql`
 
-**Formula:**  
-(On-Time Delivered Shipments / Total Delivered Shipments) × 100
+### 2.1 Supplier Overview
+Provides an overall summary of supplier performance.
 
-### Delayed Shipments
-Counts delivered shipments where the actual delivery date is later than the expected delivery date.
+- Total Suppliers
+- Average Supplier Lead Time (Days)
+- Average Supplier Reliability Score
 
-**Condition:**  
-`actual_delivery_date > expected_delivery_date`
+### 2.2 Supplier-wise Performance
+Displays individual supplier details, lead times, and reliability scores.
 
-### Shipment Delay Rate
-Measures the percentage of delivered shipments that arrived late.
+Suppliers are ordered by lead time in descending order to identify suppliers with longer delivery times.
 
-**Formula:**  
-(Delayed Delivered Shipments / Total Delivered Shipments) × 100
+### 2.3 Suppliers Ranked by Reliability
+Ranks suppliers based on their reliability scores in descending order.
 
-### Average Shipment Delay
-Measures the average number of days by which delayed shipments exceeded their expected delivery dates.
+Higher reliability scores appear first.
 
-**Formula:**  
-`AVG(actual_delivery_date - expected_delivery_date)` for delayed shipments.
+## 3. Shipment Status Analysis
 
-## KPI Usage
+**SQL File:** `shipments_status.sql`
 
-These KPIs help identify inventory shortages, evaluate supplier performance, monitor shipment delays, and support operational decision-making.
+### 3.1 Shipment Overview
+Provides an overall shipment summary.
 
-**Note:** KPI calculations should use the same filters and denominator definitions as the corresponding SQL queries and dashboard charts.
+- Total Shipments
+- Delayed Shipments
+- On-Time Shipments
 
+### 3.2 Shipment Delay Rate
+Calculates the percentage of shipments classified as delayed.
+
+**Formula:**
+
+(Delayed Shipments / Total Shipments) × 100
+
+### 3.3 Average Shipment Delay
+Calculates the average number of days by which delayed shipments exceeded their expected delivery dates.
+
+**Calculation:** Average of `actual_delivery_date - expected_delivery_date` for shipments with status `Delayed`.
+
+### 3.4 Product-wise Shipment Status
+Groups shipments by product and shipment status to analyze delivery performance across products.
+
+## 4. SQL Technologies and Techniques
+
+- PostgreSQL
+- Aggregate Functions: `COUNT()`, `SUM()`, `AVG()`
+- Conditional Aggregation: `FILTER (WHERE ...)`
+- Grouping: `GROUP BY`
+- Sorting: `ORDER BY`
+- Null Handling: `NULLIF()`
+- Numeric Formatting: `ROUND()`
+- Date Arithmetic
+
+## 5. Important Notes
+
+The current SQL implementation includes 12 analyses across three categories:
+
+- Inventory Analysis: 5 queries
+- Supplier Performance Analysis: 3 queries
+- Shipment Analysis: 4 queries
+
+The following metrics are not independently calculated in these three SQL files:
+
+- Stock-Out Rate (%)
+- Average Days of Inventory
+- On-Time Delivery Rate (%)
+
+These metrics should only be marked as implemented after their corresponding SQL calculations are added and validated.
+
+## 6. Business Value
+
+These SQL analyses help:
+
+- Monitor inventory availability and replenishment requirements.
+- Identify warehouses with higher or lower stock levels.
+- Compare supplier lead times and reliability.
+- Track delayed shipments and shipment performance.
+- Understand product-wise shipment status.
+- Support data-driven retail and supply chain decisions.
