@@ -1,262 +1,163 @@
-\# Data Documentation
+# Data Documentation
+## Nexvia Retail & Supply Chain Control Tower
 
-\## Retail \& Supply Chain Control Tower
+## 1. Overview
 
+This document describes the datasets used in the Nexvia Retail & Supply Chain Control Tower project.
 
+The project uses Python-generated simulated data to analyze inventory levels, supplier information, shipment performance, and product demand.
 
-\### 1. Introduction
+The generated datasets are stored in CSV format and imported into PostgreSQL for data analysis and dashboard development.
 
+## 2. Data Sources
 
+The project uses four CSV datasets generated through the Python script `generate_data.py`.
 
-This document describes the datasets used in the Retail \& Supply Chain Control Tower project. The project uses simulated retail supply chain data to monitor inventory, suppliers, shipments, and product demand.
-
-
-
-The datasets are generated using Python and stored as CSV files before being imported into PostgreSQL for analysis and dashboard development.
-
-
-
-\### 2. Data Sources
-
-
-
-The project uses four CSV datasets:
-
-
-
-| Dataset | CSV File | Records |
-
+| Dataset | CSV File | Number of Records |
 |---|---|---:|
+| Inventory | `inventory.csv` | 100 |
+| Suppliers | `suppliers.csv` | 10 |
+| Shipments | `shipments.csv` | 200 |
+| Product Demand | `product_demand.csv` | 9,000 |
+| **Total** | **4 CSV files** | **9,310** |
 
-| Inventory | inventory.csv | 100 |
+**Data Source:** Synthetically generated data using Python.
 
-| Suppliers | suppliers.csv | 10 |
+## 3. Dataset Details
 
-| Shipments | shipments.csv | 200 |
+### 3.1 Inventory Dataset
 
-| Product Demand | product\_demand.csv | 9,000 |
+**File:** `inventory.csv`
 
-| \*\*Total\*\* | \*\*4 CSV files\*\* | \*\*9,310\*\* |
+**Purpose:** Maintains product-level inventory information and supports stock monitoring and low-stock identification.
 
-
-
-\*\*Data source:\*\* Synthetically generated project data using Python.
-
-
-
-\### 3. Dataset Description
-
-
-
-\#### 3.1 Inventory Dataset
-
-
-
-\*\*Purpose:\*\* Tracks product stock levels across warehouses and helps identify low-stock products.
-
-
-
-| Column | Data Type | Description |
-
+| Column Name | Data Type | Description |
 |---|---|---|
+| `product_id` | String | Unique identifier of the product |
+| `product_name` | String | Name of the product |
+| `warehouse_id` | String | Identifier of the warehouse |
+| `stock_quantity` | Integer | Available stock quantity |
+| `reorder_level` | Integer | Minimum stock level for replenishment |
+| `last_updated` | ISO Datetime | Date and time of the last update |
 
-| product\_id | String | Unique product identifier |
+**Total Records:** 100
 
-| product\_name | String | Name of the product |
+### 3.2 Suppliers Dataset
 
-| warehouse\_id | String | Warehouse identifier |
+**File:** `suppliers.csv`
 
-| stock\_quantity | Integer | Available stock quantity |
+**Purpose:** Stores supplier details and performance-related information for supplier analysis.
 
-| reorder\_level | Integer | Minimum stock threshold for replenishment |
-
-| last\_updated | Timestamp | Date and time of the last inventory update |
-
-
-
-\*\*Total Records:\*\* 100
-
-
-
-\#### 3.2 Suppliers Dataset
-
-
-
-\*\*Purpose:\*\* Stores supplier information and performance-related details.
-
-
-
-| Column | Data Type | Description |
-
+| Column Name | Data Type | Description |
 |---|---|---|
+| `supplier_id` | String | Unique supplier identifier |
+| `supplier_name` | String | Name of the supplier |
+| `contact_email` | String | Supplier contact email |
+| `lead_time_days` | Integer | Expected supplier lead time in days |
+| `reliability_score` | Float | Supplier reliability score |
 
-| supplier\_id | String | Unique supplier identifier |
+**Total Records:** 10
 
-| supplier\_name | String | Name of the supplier |
+### 3.3 Shipments Dataset
 
-| lead\_time\_days | Integer | Expected supplier delivery lead time in days |
+**File:** `shipments.csv`
 
-| reliability\_score | Numeric | Supplier reliability score |
+**Purpose:** Tracks shipment details and helps identify delayed deliveries and shipment performance.
 
-| contact\_email | String | Supplier contact email address |
-
-
-
-\*\*Total Records:\*\* 10
-
-
-
-\#### 3.3 Shipments Dataset
-
-
-
-\*\*Purpose:\*\* Tracks shipment orders, expected delivery dates, actual delivery dates, and shipment status.
-
-
-
-| Column | Data Type | Description |
-
+| Column Name | Data Type | Description |
 |---|---|---|
+| `shipment_id` | String | Unique shipment identifier |
+| `supplier_id` | String | Associated supplier identifier |
+| `product_id` | String | Associated product identifier |
+| `order_date` | ISO Date | Date when the shipment was ordered |
+| `expected_delivery_date` | ISO Date | Expected delivery date |
+| `actual_delivery_date` | ISO Date | Actual delivery date |
+| `shipment_status` | String | Current shipment status |
+| `quantity` | Integer | Quantity of products in the shipment |
 
-| shipment\_id | String | Unique shipment identifier |
+**Total Records:** 200
 
-| supplier\_id | String | Associated supplier identifier |
+### 3.4 Product Demand Dataset
 
-| product\_id | String | Associated product identifier |
+**File:** `product_demand.csv`
 
-| order\_date | Date | Shipment order date |
+**Purpose:** Contains historical product demand information used for demand analysis and forecasting.
 
-| expected\_delivery\_date | Date | Expected delivery date |
-
-| actual\_delivery\_date | Date | Actual delivery date |
-
-| shipment\_status | String | Current shipment status |
-
-| quantity | Integer | Quantity of products in the shipment |
-
-
-
-\*\*Total Records:\*\* 200
-
-
-
-\#### 3.4 Product Demand Dataset
-
-
-
-\*\*Purpose:\*\* Stores historical daily product demand and sales information for demand analysis and forecasting.
-
-
-
-| Column | Data Type | Description |
-
+| Column Name | Data Type | Description |
 |---|---|---|
+| `demand_date` | ISO Date | Date of recorded product demand |
+| `product_id` | String | Associated product identifier |
+| `units_sold` | Integer | Number of units sold |
 
-| demand\_date | Date | Date of recorded product demand |
+**Total Records:** 9,000
 
-| product\_id | String | Associated product identifier |
-
-| units\_sold | Integer | Number of units sold on that date |
-
-
-
-\*\*Total Records:\*\* 9,000
-
-
-
-\### 4. Data Relationships
-
-
+## 4. Data Relationships
 
 The datasets are connected using common identifiers.
 
+| Primary Dataset | Related Dataset | Common Column |
+|---|---|---|
+| Inventory | Shipments | `product_id` |
+| Inventory | Product Demand | `product_id` |
+| Suppliers | Shipments | `supplier_id` |
 
+These relationships support integrated analysis of stock availability, supplier performance, shipment delays, and product demand.
 
-\- `suppliers.supplier\_id` connects with `shipments.supplier\_id`.
-
-\- `inventory.product\_id` connects with `shipments.product\_id`.
-
-\- `inventory.product\_id` connects with `product\_demand.product\_id`.
-
-
-
-These relationships support combined analysis of inventory availability, supplier performance, shipment delays, and product demand.
-
-
-
-\### 5. Data Storage
-
-
+## 5. Data Storage and Database Structure
 
 The generated CSV files are imported into PostgreSQL.
 
+**Database:** PostgreSQL
 
+**Database Tables:**
 
-\*\*Database:\*\* PostgreSQL
+- `inventory`
+- `suppliers`
+- `shipments`
+- `product_demand`
 
+The PostgreSQL `inventory` table also contains an additional `inventory_id` integer column generated at the database level. This column is not part of the original CSV dataset.
 
+## 6. Data Generation and Import Process
 
-\*\*Tables:\*\*
+The data pipeline follows these steps:
 
-\- inventory
+1. Python generates simulated supply chain datasets.
+2. Four CSV files are created.
+3. The CSV files are imported into PostgreSQL.
+4. The imported data is used for SQL analysis and dashboard reporting.
+5. The hourly automation process regenerates and imports updated datasets.
 
-\- suppliers
+**Python Scripts:**
 
-\- shipments
+- `generate_data.py` – Generates the datasets.
+- `import_to_postgres.py` – Imports CSV data into PostgreSQL.
+- `hourly_refresh.py` – Automates dataset generation and database import.
 
-\- product\_demand
+## 7. Data Usage in the Project
 
-
-
-The PostgreSQL inventory table also contains a database-generated `inventory\_id` column in addition to the CSV fields.
-
-
-
-\### 6. Data Generation and Refresh
-
-
-
-Python scripts generate simulated supply chain data and save the datasets as CSV files.
-
-
-
-The hourly automation process:
-
-1\. Generates updated datasets.
-
-2\. Saves the CSV files.
-
-3\. Imports the data into PostgreSQL.
-
-4\. Records execution details in the automation log.
-
-
-
-\### 7. Data Usage in the Project
-
-
-
-| Dataset | Project Usage |
-
+| Dataset | Application |
 |---|---|
-
-| Inventory | Stock monitoring and low-stock identification |
-
+| Inventory | Inventory monitoring and low-stock identification |
 | Suppliers | Supplier performance analysis |
-
 | Shipments | Shipment tracking and delay analysis |
-
 | Product Demand | Demand analysis and forecasting |
 
+## 8. Data Quality and Validation
 
+The data pipeline validates successful dataset generation and PostgreSQL import through execution results and logs.
 
-These datasets provide the foundation for SQL analysis, machine learning, KPI monitoring, and supply chain dashboard reporting.
+The successful import results confirmed:
 
+- 100 inventory records imported.
+- 10 supplier records imported.
+- 200 shipment records imported.
+- 9,000 product demand records imported.
 
+**Total records imported: 9,310.**
 
-\### 8. Conclusion
+## 9. Conclusion
 
+The four datasets provide the foundation for the Retail & Supply Chain Control Tower project.
 
-
-The four datasets provide a structured representation of the retail supply chain. Their integration in PostgreSQL enables centralized analysis of inventory, suppliers, shipments, and product demand, supporting data-driven supply chain monitoring and decision-making.
-
+Their integration in PostgreSQL enables centralized data analysis and supports inventory monitoring, supplier evaluation, shipment delay analysis, demand forecasting, and dashboard-based decision-making.
